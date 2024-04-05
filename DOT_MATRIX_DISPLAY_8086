@@ -1,0 +1,39 @@
+;;Dot MATRIX Interfacing
+.MODEL SMALL
+.DATA
+    ROWS        DB 11111110B ; Binary pattern for rows (example)
+    COLUMN_DATA DB 01010101B ; Sample column data for display (example)
+
+    PORT_ADDRESS equ 020H     ; Port address for controlling the display
+    DELAY_COUNT  equ 1000     ; Delay count for refresh rate
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA            ; Load data segment address
+    MOV DS, AX               ; Initialize data segment
+
+LOOP_START:
+    CALL DISPLAY_DATA        ; Call subroutine to display data
+    CALL DELAY               ; Call delay subroutine
+    JMP LOOP_START           ; Loop back for continuous display
+
+DISPLAY_DATA PROC
+    MOV DX, PORT_ADDRESS    ; Load display port address into DX
+    MOV AL, ROWS            ; Load row pattern into AL register
+    OUT DX, AL              ; Output row pattern to display
+
+    MOV AL, COLUMN_DATA     ; Load column data into AL register
+    OUT DX, AL              ; Output column data to display
+    RET
+DISPLAY_DATA ENDP
+
+DELAY PROC
+    MOV CX, DELAY_COUNT     ; Initialize CX register for delay loop
+DELAY_LOOP:
+    NOP                      ; No operation
+    LOOP DELAY_LOOP         ; Loop until CX is zero
+    RET
+DELAY ENDP
+
+MAIN ENDP
+END MAIN
