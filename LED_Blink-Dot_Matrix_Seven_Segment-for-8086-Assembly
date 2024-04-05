@@ -1,0 +1,231 @@
+;LED Blink short code 
+.MODEL SMALL
+.DATA
+    LED_PORT EQU 020H    ; Port address for controlling the LED
+    LED_ON   DB 01H      ; Data to turn on the LED
+    LED_OFF  DB 00H      ; Data to turn off the LED
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA        ; Load data segment address
+    MOV DS, AX           ; Initialize data segment
+
+    MOV DX, LED_PORT     ; Load LED port address into DX
+
+LOOP:
+    MOV AL, LED_ON      ; Load data to turn on the LED into AL register
+    OUT DX, AL          ; Output data to LED port to turn on the LED
+    CALL DELAY          ; Call delay subroutine
+    MOV AL, LED_OFF     ; Load data to turn off the LED into AL register
+    OUT DX, AL          ; Output data to LED port to turn off the LED
+    CALL DELAY          ; Call delay subroutine
+    JMP LOOP            ; Loop back to blinking
+
+DELAY:
+    MOV CX, 0FFFFH      ; Initialize CX register for delay loop
+DELAY_LOOP:
+    DEC CX              ; Decrement CX
+    JNZ DELAY_LOOP      ; Loop until CX is zero
+    RET                 ; Return from delay subroutine
+
+MAIN ENDP
+END MAIN
+
+
+Seven-Segment Display:
+
+.MODEL SMALL
+.DATA
+    LED_PORT    EQU 020H   ; Port address for seven-segment display
+    SEGMENT_DATA DB 0       ; Data for seven-segment display
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA          ; Load data segment address
+    MOV DS, AX             ; Initialize data segment
+
+    MOV DX, LED_PORT       ; Load seven-segment display port address into DX
+
+    MOV AL, SEGMENT_DATA   ; Load data to be displayed into AL register
+    OUT DX, AL             ; Output data to seven-segment display
+
+    ; Continue with your program logic here
+
+MAIN ENDP
+END MAIN
+
+LED Display:
+.MODEL SMALL
+.DATA
+    LED_PORT    EQU 020H   ; Port address for LED display
+    LED_DATA    DB 0FFH    ; Data for LED display
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA          ; Load data segment address
+    MOV DS, AX             ; Initialize data segment
+
+    MOV DX, LED_PORT       ; Load LED display port address into DX
+
+    MOV AL, LED_DATA       ; Load data to be displayed into AL register
+    OUT DX, AL             ; Output data to LED display
+
+    ; Continue with your program logic here
+
+MAIN ENDP
+END MAIN
+
+
+;Seven-Segment Display short code
+.MODEL SMALL
+.DATA
+    LED_PORT    EQU 020H   ; Port address for seven-segment display
+    SEGMENT_DATA DB 3FH     ; Data for displaying '0' on seven-segment display
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA          ; Load data segment address
+    MOV DS, AX             ; Initialize data segment
+
+    MOV DX, LED_PORT       ; Load seven-segment display port address into DX
+
+    MOV AL, SEGMENT_DATA   ; Load data to be displayed into AL register
+    OUT DX, AL             ; Output data to seven-segment display
+
+    ; Continue with your program logic here
+
+    MOV AH, 4CH            ; Exit program
+    INT 21H
+
+MAIN ENDP
+END MAIN
+
+;LED Display short_code
+.MODEL SMALL
+.DATA
+    LED_PORT    EQU 020H   ; Port address for LED display
+    LED_DATA    DB 0FFH    ; Data for LED display
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA          ; Load data segment address
+    MOV DS, AX             ; Initialize data segment
+
+    MOV DX, LED_PORT       ; Load LED display port address into DX
+
+    MOV AL, LED_DATA       ; Load data to be displayed into AL register
+    OUT DX, AL             ; Output data to LED display
+
+    ; Continue with your program logic here
+
+    MOV AH, 4CH            ; Exit program
+    INT 21H
+
+MAIN ENDP
+END MAIN
+
+
+;Seven-Segment combained seven-segment-display and led-display code
+.MODEL SMALL
+.DATA
+    SEGMENT_PORT EQU 020H    ; Port address for seven-segment display
+    LED_PORT     EQU 021H    ; Port address for LED display
+    SEGMENT_DATA DB 3FH      ; Data for displaying '0' on seven-segment display
+    LED_DATA     DB 0FFH     ; Data for LED display
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA           ; Load data segment address
+    MOV DS, AX              ; Initialize data segment
+
+    ; Display '0' on seven-segment display
+    MOV DX, SEGMENT_PORT    ; Load seven-segment display port address into DX
+    MOV AL, SEGMENT_DATA    ; Load data to be displayed into AL register
+    OUT DX, AL              ; Output data to seven-segment display
+
+    ; Turn on all LEDs on LED display
+    MOV DX, LED_PORT        ; Load LED display port address into DX
+    MOV AL, LED_DATA        ; Load data to be displayed into AL register
+    OUT DX, AL              ; Output data to LED display
+
+    ; Continue with your program logic here
+
+    MOV AH, 4CH             ; Exit program
+    INT 21H
+
+MAIN ENDP
+END MAIN
+
+;Interfacing Dot Matrix Display with 8086 Microprocessor
+.MODEL SMALL
+.DATA
+    ROWS        DB 11111110B ; Binary pattern for rows (example)
+    COLUMN_DATA DB 01010101B ; Sample column data for display (example)
+
+    PORT_ADDRESS equ 020H     ; Port address for controlling the display
+    DELAY_COUNT  equ 1000     ; Delay count for refresh rate
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA            ; Load data segment address
+    MOV DS, AX               ; Initialize data segment
+
+LOOP_START:
+    CALL DISPLAY_DATA        ; Call subroutine to display data
+    CALL DELAY               ; Call delay subroutine
+    JMP LOOP_START           ; Loop back for continuous display
+
+DISPLAY_DATA PROC
+    MOV DX, PORT_ADDRESS    ; Load display port address into DX
+    MOV AL, ROWS            ; Load row pattern into AL register
+    OUT DX, AL              ; Output row pattern to display
+
+    MOV AL, COLUMN_DATA     ; Load column data into AL register
+    OUT DX, AL              ; Output column data to display
+    RET
+DISPLAY_DATA ENDP
+
+DELAY PROC
+    MOV CX, DELAY_COUNT     ; Initialize CX register for delay loop
+DELAY_LOOP:
+    NOP                      ; No operation
+    LOOP DELAY_LOOP         ; Loop until CX is zero
+    RET
+DELAY ENDP
+
+MAIN ENDP
+END MAIN
+
+
+;Interfacing Dot Matrix Display with 8086 Microprocessor (short code)
+.MODEL SMALL
+.DATA
+    ROW_DATA    DB 10000000B  ; Example row data
+    COL_DATA    DB 01010101B  ; Example column data
+
+    PORT_ADDRESS EQU 020H      ; Port address for controlling the display
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA             ; Load data segment address
+    MOV DS, AX                ; Initialize data segment
+
+    MOV DX, PORT_ADDRESS      ; Load display port address into DX
+
+    MOV AL, ROW_DATA          ; Load row data into AL register
+    OUT DX, AL                ; Output row data to display
+
+    MOV AL, COL_DATA          ; Load column data into AL register
+    OUT DX, AL                ; Output column data to display
+
+    ; Continue with your program logic here
+
+    MOV AH, 4CH               ; Exit program
+    INT 21H
+
+MAIN ENDP
+END MAIN
+
+
+
+
