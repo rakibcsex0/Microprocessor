@@ -31,6 +31,28 @@ DELAY_LOOP:
 MAIN ENDP
 END MAIN
 
+;LED Blink Short Code
+.MODEL SMALL
+.CODE
+MAIN PROC
+    MOV AL, 01H        
+    MOV DX, 020H       
+
+LOOP:
+    OUT DX, AL         
+    XOR AL, 01H        
+    CALL DELAY         
+    JMP LOOP           
+
+DELAY:
+    MOV CX, 0FFFFH     
+DELAY_LOOP:
+    DEC CX             
+    JNZ DELAY_LOOP     
+    RET                
+
+MAIN ENDP
+END MAIN
 
 Seven-Segment Display:
 
