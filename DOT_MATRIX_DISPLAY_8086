@@ -1,4 +1,4 @@
-;;Dot MATRIX Interfacing
+;;Dot MATRIX Interfacing LONG CODE
 .MODEL SMALL
 .DATA
     ROWS        DB 11111110B ; Binary pattern for rows (example)
@@ -34,6 +34,37 @@ DELAY_LOOP:
     LOOP DELAY_LOOP         ; Loop until CX is zero
     RET
 DELAY ENDP
+
+MAIN ENDP
+END MAIN
+
+
+
+
+
+;;Dot MATRIX Interfacing SHORT CODE
+.MODEL SMALL
+.DATA
+    ROW_DATA    DB 10000000B
+    COL_DATA    DB 01010101B
+
+    PORT_ADDRESS EQU 020H
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA             
+    MOV DS, AX                
+
+    MOV DX, PORT_ADDRESS      
+
+    MOV AL, ROW_DATA          
+    OUT DX, AL                
+
+    MOV AL, COL_DATA          
+    OUT DX, AL                
+
+    MOV AH, 4CH
+    INT 21H
 
 MAIN ENDP
 END MAIN
